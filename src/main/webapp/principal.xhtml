@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:p="http://primefaces.org/ui"
+        locale="#{facesContext.externalContext.requestLocale}"
+        xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+        <title>TODO supply a title</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </h:head>
+    <h:body>
+        <ui:composition template="/shared/layout.xhtml">
+            <ui:define name="body">
+                <p:panel id="toggleable" header="Toggleable" toggleable="true" closable="true" toggleSpeed="500" closeSpeed="500" widgetVar="panel" style="margin-bottom:20px">
+
+                    <p:ajax event="close" listener="#{login.onClose}"/>
+                    <p:ajax event="toggle" listener="#{login.onToggle}"/>
+
+                    <h:panelGrid columns="2" cellpadding="10">                        
+                        <h:outputFormat value="#{msjs.mensaje_bienvenida}">
+                            <f:param value="#{login.username}" />
+                        </h:outputFormat>
+                    </h:panelGrid>
+
+                    <f:facet name="options">
+                        <p:menu>
+                            <p:submenu label="Settings">
+                                <p:menuitem value="Toggle" url="#" icon="ui-icon-newwin" onclick="PF('panel').toggle()" />
+                                <p:menuitem value="Remove" url="#" icon="ui-icon-close" onclick="PF('panel').close()" />
+                            </p:submenu>
+                        </p:menu>
+                    </f:facet>
+                </p:panel>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</f:view>

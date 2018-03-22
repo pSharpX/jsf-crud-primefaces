@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:p="http://primefaces.org/ui"
+        locale="#{facesContext.externalContext.requestLocale}"
+        xmlns:ui="http://java.sun.com/jsf/facelets">
+    <ui:composition template="/shared/layout.xhtml">
+        <ui:define name="body">
+            <p:panel id="toggleable" header="Toggleable" toggleable="true" closable="true" toggleSpeed="500" closeSpeed="500" widgetVar="panel" style="margin-bottom:20px">
+                <p:ajax event="close" listener="#{login.onClose}"/>
+                <p:ajax event="toggle" listener="#{login.onToggle}"/>
+
+                <p:panelGrid>
+                    <h:form class="ui-fluid">                        
+                        <div class="ui-g">
+                            <div class="ui-g-4">
+                                <h:outputLabel value="Nombre:" />
+                            </div>
+                            <div class="ui-g-8">
+                                <h:inputText value="#{clienteBean.cliente.nombre}" required="true" id="nombre" label="Nombre" />
+                                <h:message for="nombre" />
+                            </div>
+                        </div>
+
+                        <div class="ui-g">
+                            <div class="ui-g-4">
+                                <h:outputLabel value="Apellido:" />
+                            </div>
+                            <div class="ui-g-8">
+                                <h:inputText value="#{clienteBean.cliente.apellido}" required="true" id="apellido" label="Apellido">
+                                    <f:validateLength  maximum="20" />
+                                </h:inputText>
+                                <h:message for="apellido" />
+                            </div>                            
+                        </div>
+
+                        <div class="ui-g">
+                            <div class="ui-g-4">
+                                <h:outputLabel value="Genero:" />
+                            </div>
+                            <div class="ui-g-8">
+                                <h:selectOneRadio value="#{clienteBean.cliente.genero}">
+                                    <f:selectItems value="#{listados.generos}" />
+                                </h:selectOneRadio>
+                            </div>                            
+                        </div>
+
+                        <div class="ui-g">
+                            <div class="ui-g-4">
+                                <h:outputLabel value="Profesion:" />
+                            </div>
+                            <div class="ui-g-8">
+                                <h:selectOneListbox value="#{clienteBean.cliente.profesion}" size="1" 
+                                                    onchange="submit()"
+                                                    valueChangeListener="#{clienteBean.mensajeProfesion}">
+                                    <f:selectItems value="#{listados.profesiones}" />
+                                </h:selectOneListbox>
+                                <h:outputText value="#{clienteBean.mensaje}" />
+                            </div>                            
+                        </div>
+
+                        <div class="ui-g">
+                            <div class="ui-g-4">
+                                <h:outputLabel value="Numero Movil:" />
+                            </div>
+                            <div class="ui-g-8">
+                                <h:inputText value="#{clienteBean.cliente.numeroMovil}">
+                                    <f:converter converterId="numeroMovil" />
+                                </h:inputText>
+                            </div>                            
+                        </div>
+
+                        <div class="ui-g">
+                            <div class="ui-g-4">
+                                <h:outputLabel value="Desea recibir publicidad?" />
+                            </div>
+                            <div class="ui-g-8">
+                                <h:selectBooleanCheckbox value="#{clienteBean.cliente.publicidad}"  />
+                            </div>                            
+                        </div>
+
+                        <div class="ui-g">
+                            <div class="ui-g-4">
+                                <h:outputLabel value="Correo Electronico:" />
+                            </div>
+                            <div class="ui-g-8">
+                                <h:inputText value="#{clienteBean.cliente.correo}" />
+                            </div>                            
+                        </div>
+
+                        <div class="ui-g">
+                            <div class="ui-g-4">
+                                <h:outputLabel value="DNI:" />
+                            </div>
+                            <div class="ui-g-8">
+                                <h:inputText value="#{clienteBean.cliente.numeroDocumento}" id="numeroDocumento" label="DNI">
+                                    <f:validateRegex pattern="[0-9]{8}" />
+                                </h:inputText>
+                                <h:message for="numeroDocumento" />
+                            </div>                            
+                        </div>
+
+                        <div class="ui-g">
+                            <div class="ui-g-4">
+                                <h:outputLabel value="Cantidad Hijos:" />
+                            </div>
+                            <div class="ui-g-8">
+                                <h:inputText value="#{clienteBean.cliente.cantidadHijos}" id="cantidadHijos" label="Cantidad Hijos" />
+                                <h:message for="cantidadHijos" />
+                            </div>                            
+                        </div>
+
+                        <div class="ui-g">
+                            <div class="ui-g-4">
+                                <h:outputLabel value="Fecha Nacimiento:" />
+                            </div>
+                            <div class="ui-g-8">
+                                <h:inputText value="#{clienteBean.cliente.fechaNacimiento}" label="Fecha Nacimiento" id="fechaNacimiento" required="true">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                    <f:validator validatorId="fechaLimite" />
+                                </h:inputText>
+                                <h:message for="fechaNacimiento" showDetail="true" showSummary="false" />
+                            </div>                            
+                        </div>
+
+                        <div class="ui-g">
+                            <div class="ui-g-12">
+                                <h:commandButton value="Registrar" action="#{clienteBean.registrar}" />
+                            </div>                            
+                        </div>
+                    </h:form>  
+                </p:panelGrid>
+
+                <f:facet name="options">
+                    <p:menu>
+                        <p:submenu label="Settings">
+                            <p:menuitem value="Toggle" url="#" icon="ui-icon-newwin" onclick="PF('panel').toggle()" />
+                            <p:menuitem value="Remove" url="#" icon="ui-icon-close" onclick="PF('panel').close()" />
+                        </p:submenu>
+                    </p:menu>
+                </f:facet>
+            </p:panel>            
+        </ui:define>
+    </ui:composition>    
+</f:view>
